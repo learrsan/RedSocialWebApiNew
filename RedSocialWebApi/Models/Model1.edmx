@@ -1,0 +1,378 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="RedSocialModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Amigos">
+          <Key>
+            <PropertyRef Name="idUsuario" />
+            <PropertyRef Name="idAmigo" />
+          </Key>
+          <Property Name="idUsuario" Type="int" Nullable="false" />
+          <Property Name="idAmigo" Type="int" Nullable="false" />
+          <Property Name="aceptado" Type="bit" Nullable="false" />
+        </EntityType>
+        <EntityType Name="MensajePrivado">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="idOrigen" Type="int" Nullable="false" />
+          <Property Name="idDestino" Type="int" Nullable="false" />
+          <Property Name="asunto" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="mensaje" Type="ntext" Nullable="false" />
+          <Property Name="idRespuesta" Type="int" />
+        </EntityType>
+        <EntityType Name="MensajePublico">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="idUsuario" Type="int" Nullable="false" />
+          <Property Name="asunto" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="texto" Type="ntext" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Usuario">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="login" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="password" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="nombre" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="apellidos" Type="nvarchar" MaxLength="50" Nullable="false" />
+        </EntityType>
+        <Association Name="FK_Amigos_Usuario">
+          <End Role="Usuario" Type="Self.Usuario" Multiplicity="1" />
+          <End Role="Amigos" Type="Self.Amigos" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Usuario">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="Amigos">
+              <PropertyRef Name="idUsuario" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Amigos_Usuario1">
+          <End Role="Usuario" Type="Self.Usuario" Multiplicity="1" />
+          <End Role="Amigos" Type="Self.Amigos" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Usuario">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="Amigos">
+              <PropertyRef Name="idAmigo" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_MensajePrivado_MensajePrivado">
+          <End Role="MensajePrivado" Type="Self.MensajePrivado" Multiplicity="0..1" />
+          <End Role="MensajePrivado1" Type="Self.MensajePrivado" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="MensajePrivado">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="MensajePrivado1">
+              <PropertyRef Name="idRespuesta" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_MensajePrivado_Usuario">
+          <End Role="Usuario" Type="Self.Usuario" Multiplicity="1" />
+          <End Role="MensajePrivado" Type="Self.MensajePrivado" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Usuario">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="MensajePrivado">
+              <PropertyRef Name="idOrigen" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_MensajePrivado_Usuario1">
+          <End Role="Usuario" Type="Self.Usuario" Multiplicity="1" />
+          <End Role="MensajePrivado" Type="Self.MensajePrivado" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Usuario">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="MensajePrivado">
+              <PropertyRef Name="idDestino" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_MensajePublico_Usuario">
+          <End Role="Usuario" Type="Self.Usuario" Multiplicity="1" />
+          <End Role="MensajePublico" Type="Self.MensajePublico" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Usuario">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="MensajePublico">
+              <PropertyRef Name="idUsuario" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="RedSocialModelStoreContainer">
+          <EntitySet Name="Amigos" EntityType="Self.Amigos" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="MensajePrivado" EntityType="Self.MensajePrivado" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="MensajePublico" EntityType="Self.MensajePublico" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Usuario" EntityType="Self.Usuario" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_Amigos_Usuario" Association="Self.FK_Amigos_Usuario">
+            <End Role="Usuario" EntitySet="Usuario" />
+            <End Role="Amigos" EntitySet="Amigos" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Amigos_Usuario1" Association="Self.FK_Amigos_Usuario1">
+            <End Role="Usuario" EntitySet="Usuario" />
+            <End Role="Amigos" EntitySet="Amigos" />
+          </AssociationSet>
+          <AssociationSet Name="FK_MensajePrivado_MensajePrivado" Association="Self.FK_MensajePrivado_MensajePrivado">
+            <End Role="MensajePrivado" EntitySet="MensajePrivado" />
+            <End Role="MensajePrivado1" EntitySet="MensajePrivado" />
+          </AssociationSet>
+          <AssociationSet Name="FK_MensajePrivado_Usuario" Association="Self.FK_MensajePrivado_Usuario">
+            <End Role="Usuario" EntitySet="Usuario" />
+            <End Role="MensajePrivado" EntitySet="MensajePrivado" />
+          </AssociationSet>
+          <AssociationSet Name="FK_MensajePrivado_Usuario1" Association="Self.FK_MensajePrivado_Usuario1">
+            <End Role="Usuario" EntitySet="Usuario" />
+            <End Role="MensajePrivado" EntitySet="MensajePrivado" />
+          </AssociationSet>
+          <AssociationSet Name="FK_MensajePublico_Usuario" Association="Self.FK_MensajePublico_Usuario">
+            <End Role="Usuario" EntitySet="Usuario" />
+            <End Role="MensajePublico" EntitySet="MensajePublico" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="RedSocialModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="Amigos">
+          <Key>
+            <PropertyRef Name="idUsuario" />
+            <PropertyRef Name="idAmigo" />
+          </Key>
+          <Property Name="idUsuario" Type="Int32" Nullable="false" />
+          <Property Name="idAmigo" Type="Int32" Nullable="false" />
+          <Property Name="aceptado" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="Usuario" Relationship="Self.FK_Amigos_Usuario" FromRole="Amigos" ToRole="Usuario" />
+          <NavigationProperty Name="Usuario1" Relationship="Self.FK_Amigos_Usuario1" FromRole="Amigos" ToRole="Usuario" />
+        </EntityType>
+        <EntityType Name="MensajePrivado">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="idOrigen" Type="Int32" Nullable="false" />
+          <Property Name="idDestino" Type="Int32" Nullable="false" />
+          <Property Name="asunto" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="mensaje" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="idRespuesta" Type="Int32" />
+          <NavigationProperty Name="MensajePrivado1" Relationship="Self.FK_MensajePrivado_MensajePrivado" FromRole="MensajePrivado" ToRole="MensajePrivado1" />
+          <NavigationProperty Name="MensajePrivado2" Relationship="Self.FK_MensajePrivado_MensajePrivado" FromRole="MensajePrivado1" ToRole="MensajePrivado" />
+          <NavigationProperty Name="Usuario" Relationship="Self.FK_MensajePrivado_Usuario" FromRole="MensajePrivado" ToRole="Usuario" />
+          <NavigationProperty Name="Usuario1" Relationship="Self.FK_MensajePrivado_Usuario1" FromRole="MensajePrivado" ToRole="Usuario" />
+        </EntityType>
+        <EntityType Name="MensajePublico">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="idUsuario" Type="Int32" Nullable="false" />
+          <Property Name="asunto" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="texto" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+          <NavigationProperty Name="Usuario" Relationship="Self.FK_MensajePublico_Usuario" FromRole="MensajePublico" ToRole="Usuario" />
+        </EntityType>
+        <EntityType Name="Usuario">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="login" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="password" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="nombre" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="apellidos" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <NavigationProperty Name="Amigos" Relationship="Self.FK_Amigos_Usuario" FromRole="Usuario" ToRole="Amigos" />
+          <NavigationProperty Name="Amigos1" Relationship="Self.FK_Amigos_Usuario1" FromRole="Usuario" ToRole="Amigos" />
+          <NavigationProperty Name="MensajePrivado" Relationship="Self.FK_MensajePrivado_Usuario" FromRole="Usuario" ToRole="MensajePrivado" />
+          <NavigationProperty Name="MensajePrivado1" Relationship="Self.FK_MensajePrivado_Usuario1" FromRole="Usuario" ToRole="MensajePrivado" />
+          <NavigationProperty Name="MensajePublico" Relationship="Self.FK_MensajePublico_Usuario" FromRole="Usuario" ToRole="MensajePublico" />
+        </EntityType>
+        <Association Name="FK_Amigos_Usuario">
+          <End Role="Usuario" Type="Self.Usuario" Multiplicity="1" />
+          <End Role="Amigos" Type="Self.Amigos" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Usuario">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="Amigos">
+              <PropertyRef Name="idUsuario" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Amigos_Usuario1">
+          <End Role="Usuario" Type="Self.Usuario" Multiplicity="1" />
+          <End Role="Amigos" Type="Self.Amigos" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Usuario">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="Amigos">
+              <PropertyRef Name="idAmigo" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_MensajePrivado_MensajePrivado">
+          <End Role="MensajePrivado" Type="Self.MensajePrivado" Multiplicity="0..1" />
+          <End Role="MensajePrivado1" Type="Self.MensajePrivado" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="MensajePrivado">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="MensajePrivado1">
+              <PropertyRef Name="idRespuesta" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_MensajePrivado_Usuario">
+          <End Role="Usuario" Type="Self.Usuario" Multiplicity="1" />
+          <End Role="MensajePrivado" Type="Self.MensajePrivado" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Usuario">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="MensajePrivado">
+              <PropertyRef Name="idOrigen" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_MensajePrivado_Usuario1">
+          <End Role="Usuario" Type="Self.Usuario" Multiplicity="1" />
+          <End Role="MensajePrivado" Type="Self.MensajePrivado" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Usuario">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="MensajePrivado">
+              <PropertyRef Name="idDestino" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_MensajePublico_Usuario">
+          <End Role="Usuario" Type="Self.Usuario" Multiplicity="1" />
+          <End Role="MensajePublico" Type="Self.MensajePublico" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Usuario">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="MensajePublico">
+              <PropertyRef Name="idUsuario" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="RedSocialEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Amigos" EntityType="Self.Amigos" />
+          <EntitySet Name="MensajePrivado" EntityType="Self.MensajePrivado" />
+          <EntitySet Name="MensajePublico" EntityType="Self.MensajePublico" />
+          <EntitySet Name="Usuario" EntityType="Self.Usuario" />
+          <AssociationSet Name="FK_Amigos_Usuario" Association="Self.FK_Amigos_Usuario">
+            <End Role="Usuario" EntitySet="Usuario" />
+            <End Role="Amigos" EntitySet="Amigos" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Amigos_Usuario1" Association="Self.FK_Amigos_Usuario1">
+            <End Role="Usuario" EntitySet="Usuario" />
+            <End Role="Amigos" EntitySet="Amigos" />
+          </AssociationSet>
+          <AssociationSet Name="FK_MensajePrivado_MensajePrivado" Association="Self.FK_MensajePrivado_MensajePrivado">
+            <End Role="MensajePrivado" EntitySet="MensajePrivado" />
+            <End Role="MensajePrivado1" EntitySet="MensajePrivado" />
+          </AssociationSet>
+          <AssociationSet Name="FK_MensajePrivado_Usuario" Association="Self.FK_MensajePrivado_Usuario">
+            <End Role="Usuario" EntitySet="Usuario" />
+            <End Role="MensajePrivado" EntitySet="MensajePrivado" />
+          </AssociationSet>
+          <AssociationSet Name="FK_MensajePrivado_Usuario1" Association="Self.FK_MensajePrivado_Usuario1">
+            <End Role="Usuario" EntitySet="Usuario" />
+            <End Role="MensajePrivado" EntitySet="MensajePrivado" />
+          </AssociationSet>
+          <AssociationSet Name="FK_MensajePublico_Usuario" Association="Self.FK_MensajePublico_Usuario">
+            <End Role="Usuario" EntitySet="Usuario" />
+            <End Role="MensajePublico" EntitySet="MensajePublico" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="RedSocialModelStoreContainer" CdmEntityContainer="RedSocialEntities">
+          <EntitySetMapping Name="Amigos">
+            <EntityTypeMapping TypeName="RedSocialModel.Amigos">
+              <MappingFragment StoreEntitySet="Amigos">
+                <ScalarProperty Name="idUsuario" ColumnName="idUsuario" />
+                <ScalarProperty Name="idAmigo" ColumnName="idAmigo" />
+                <ScalarProperty Name="aceptado" ColumnName="aceptado" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="MensajePrivado">
+            <EntityTypeMapping TypeName="RedSocialModel.MensajePrivado">
+              <MappingFragment StoreEntitySet="MensajePrivado">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="idOrigen" ColumnName="idOrigen" />
+                <ScalarProperty Name="idDestino" ColumnName="idDestino" />
+                <ScalarProperty Name="asunto" ColumnName="asunto" />
+                <ScalarProperty Name="mensaje" ColumnName="mensaje" />
+                <ScalarProperty Name="idRespuesta" ColumnName="idRespuesta" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="MensajePublico">
+            <EntityTypeMapping TypeName="RedSocialModel.MensajePublico">
+              <MappingFragment StoreEntitySet="MensajePublico">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="idUsuario" ColumnName="idUsuario" />
+                <ScalarProperty Name="asunto" ColumnName="asunto" />
+                <ScalarProperty Name="texto" ColumnName="texto" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Usuario">
+            <EntityTypeMapping TypeName="RedSocialModel.Usuario">
+              <MappingFragment StoreEntitySet="Usuario">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="login" ColumnName="login" />
+                <ScalarProperty Name="password" ColumnName="password" />
+                <ScalarProperty Name="nombre" ColumnName="nombre" />
+                <ScalarProperty Name="apellidos" ColumnName="apellidos" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="false" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>
